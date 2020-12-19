@@ -9,7 +9,6 @@ const EarDiv = styled.div`
   border-radius: 999px 999px 0 0;
   overflow: hidden;
   position: relative;
-  transition: visibility 5s;
   visibility: hidden;
   &.visible {
     visibility: visible;

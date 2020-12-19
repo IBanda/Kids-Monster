@@ -11,9 +11,12 @@ const AppDiv = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    button {
-      cursor: pointer;
-    }
+  }
+  .reset-btn {
+    cursor: pointer;
+    width: 175px;
+    height: 50px;
+    font-weight: 600;
   }
 `;
 
@@ -55,7 +58,12 @@ function App() {
     <AppDiv>
       <div>
         <PartsPanel handleClick={handleClick} />
-        <button onClick={() => dispatch({ part: 'reset' })}>reset</button>
+        <button
+          className="reset-btn"
+          onClick={() => dispatch({ part: 'reset' })}
+        >
+          reset
+        </button>
       </div>
       <div>
         <ThemeProvider theme={{ body }}>
@@ -66,7 +74,9 @@ function App() {
       </div>
       <div className="color-panel">
         <ColorPanel handleClick={onColorChange} />
-        <button onClick={() => setBody('#3c47d7')}>reset</button>
+        <button className="reset-btn" onClick={() => setBody('#3c47d7')}>
+          reset
+        </button>
       </div>
     </AppDiv>
   );
