@@ -1,24 +1,74 @@
-import logo from './logo.svg';
-import './App.css';
+import { createContext, useReducer, useState } from 'react';
+import Body from './components/Body';
+import styled, { ThemeProvider } from 'styled-components';
+import PartsPanel from './components/PartsPanel';
+import ColorPanel from './components/ColorPanel';
+
+const AppDiv = styled.div`
+  display: grid;
+  grid-template-columns: 20% 60% 20%;
+  .color-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    button {
+      cursor: pointer;
+    }
+  }
+`;
+
+const parts = {
+  ears: '',
+  eyes: '',
+  mouth: '',
+  nose: '',
+};
+export const BodyContext = createContext(parts);
+
+function reducer(state, action) {
+  switch (action.part) {
+    case 'ears':
+      return { ...state, ears: 'visible' };
+    case 'eyes':
+      return { ...state, eyes: 'visible' };
+    case 'mouth':
+      return { ...state, mouth: 'visible' };
+    case 'nose':
+      return { ...state, nose: 'visible' };
+    case 'reset':
+      return parts;
+    default:
+      return state;
+  }
+}
 
 function App() {
+  const [state, dispatch] = useReducer(reducer, parts);
+  const [body, setBody] = useState('#3c47d7');
+  const handleClick = (event) => {
+    dispatch({ part: event.target.closest('button').name });
+  };
+  const onColorChange = (event) => {
+    setBody(event.target.closest('button').name);
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AppDiv>
+      <div>
+        <PartsPanel handleClick={handleClick} />
+        <button onClick={() => dispatch({ part: 'reset' })}>reset</button>
+      </div>
+      <div>
+        <ThemeProvider theme={{ body }}>
+          <BodyContext.Provider value={state}>
+            <Body />
+          </BodyContext.Provider>
+        </ThemeProvider>
+      </div>
+      <div className="color-panel">
+        <ColorPanel handleClick={onColorChange} />
+        <button onClick={() => setBody('#3c47d7')}>reset</button>
+      </div>
+    </AppDiv>
   );
 }
 
